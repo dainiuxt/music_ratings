@@ -22,6 +22,7 @@ class Song(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     title = models.CharField(max_length=1000)
     duration = models.TimeField()
+    field_duration = models.DurationField(null=True)
 
     ORDER_STATUS = (
         ('o', 'Side one'),
