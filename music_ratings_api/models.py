@@ -3,13 +3,11 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Band(models.Model):
     title = models.CharField(max_length=150)
 
     def __str__ (self):
       return f"{self.title}"
-
 
 class Album(models.Model):
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
@@ -21,8 +19,7 @@ class Album(models.Model):
 class Song(models.Model):
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     title = models.CharField(max_length=1000)
-    duration = models.TimeField()
-    field_duration = models.DurationField(null=True)
+    duration = models.DurationField(null=True)
 
     ORDER_STATUS = (
         ('o', 'Side one'),
@@ -56,7 +53,7 @@ class AlbumReview(models.Model):
      )
 
     def __str__ (self):
-      user = self.user.name
+      user = self.user.first_name
       return f"{self.ratings} by {self.user}"
 
 class AlbumReviewComment(models.Model):
@@ -65,7 +62,7 @@ class AlbumReviewComment(models.Model):
     content = models.CharField(max_length=5000)
 
     def __str__ (self):
-      return f"{self.user}; {self.content}"
+      return f"{self.review}: {self.user.first_name}; {self.content}"
 
 class AlbumReviewLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
