@@ -43,7 +43,7 @@ class Song(models.Model):
 class AlbumReview(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
-    content = models.CharField(max_length=200)
+    review_text = models.CharField(max_length=200)
     ratings = models.IntegerField(
         default=5,
         validators=[
@@ -58,11 +58,11 @@ class AlbumReview(models.Model):
 
 class AlbumReviewComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    review = models.ForeignKey(AlbumReview, on_delete=models.CASCADE)
-    content = models.CharField(max_length=5000)
+    review = models.ForeignKey(AlbumReview, on_delete=models.CASCADE, related_name='comments')
+    comment_text = models.CharField(max_length=5000)
 
     def __str__ (self):
-      return f"{self.review}: {self.user.first_name}; {self.content}"
+      return f"{self.review}: {self.user.first_name}; {self.comment_text}"
 
 class AlbumReviewLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
