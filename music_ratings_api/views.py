@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, permissions, mixins, status
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 from .models import (Band,
                     Album,
@@ -14,7 +15,8 @@ from .serializers import (AlbumSerializer,
                         SongSerializer,
                         AlbumReviewSerializer,
                         AlbumReviewCommentSerializer,
-                        AlbumReviewLikeSerializer)
+                        AlbumReviewLikeSerializer,
+                        UserSerializer)
 
 from rest_framework.exceptions import ValidationError
 
@@ -215,6 +217,11 @@ class AlbumReviewLikeList(generics.ListCreateAPIView, mixins.DestroyModelMixin):
             return Response(status=status.HTTP_204_NO_CONTENT)
         else:
             raise ValidationError('You can\'t touch this! ;)')
+
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = (permissions.AllowAny, )
 
 # class AlbumReviewLikeDetail(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = AlbumReviewLike.objects.all()
